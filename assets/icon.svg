@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="800"
+   height="800"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="atec_wps_icon.svg"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.41125"
+     inkscape:cx="400"
+     inkscape:cy="398.78419"
+     inkscape:window-width="1392"
+     inkscape:window-height="1099"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 2.9828271,23.999996 A 1.1500004,1.090909 0 0 1 1.8328267,22.909088 v -3.272729 a 1.1500004,1.090909 0 0 1 2.2999999,0 v 3.272729 A 1.1500004,1.090909 0 0 1 2.9828271,23.999996 Z M 13.33283,22.909088 v -7.636362 a 1.1500035,1.0909121 0 0 0 -2.300007,0 v 7.636362 a 1.1500035,1.0909121 0 0 0 2.300007,0 z M 21.382823,10.90909 A 1.1500004,1.090909 0 0 0 20.232826,12 v 10.909088 a 1.1500006,1.0909092 0 0 0 2.300001,0 V 12 A 1.1500004,1.090909 0 0 0 21.382823,10.90909 Z M 21.822124,0.08400002 A 1.1396503,1.0810902 0 0 0 21.382823,0 h -4.599999 a 1.1500005,1.0909091 0 0 0 0,2.1818177 h 1.823901 L 12.182825,8.2756349 8.3958762,4.683272 a 1.1500004,1.090909 0 0 0 -1.6260997,0 L 2.1697763,9.0469074 A 1.1500004,1.090909 0 0 0 3.7958764,10.589456 L 7.5828263,6.9970894 11.369772,10.589456 a 1.1500004,1.090909 0 0 0 1.626104,0 l 7.23695,-6.8650933 v 1.7301815 a 1.1500006,1.0909092 0 0 0 2.300001,0 V 1.0909091 A 1.1500004,1.090909 0 0 0 21.822124,0.08400002 Z"
+     id="path1"
+     style="fill:#4285f4;fill-opacity:1;stroke-width:1.12007" />
+</svg>
