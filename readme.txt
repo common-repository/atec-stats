@@ -1,11 +1,10 @@
 === atec Stats ===
 Contributors: DocJoJo
-Donate link: https://www.paypal.com/paypalme/atecsystems/5eur
 Tags: Lightweight, beautiful and GDPR compliant WP statistics, including countries map.
 Requires at least: 5.2
-Tested up to: 6.6.3
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.12
+Stable tag: 1.0.13
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +27,7 @@ Frontend CPU footprint:  <1 ms.
 
 == 3rd party as a service ==
 
-Once, when activating the plugin, an integrity check is requested from our server (https://atecplugins.com/).
+Once, when activating the plugin, an integrity check is requested from our server (https://atecplugins.com/) – if you give your permission.
 Privacy policy: https://atecplugins.com/privacy-policy/
 
 The country map requires access to google's chart API at https://www.gstatic.com.
@@ -60,6 +59,9 @@ Privacy policy: https://atecplugins.com/privacy-policy/
 4. Statistics - URLs and REFERER.
 
 == Upgrade Notice ==
+
+= 1.0.13 [2024.11.01] =
+* IP6 support
 
 = 1.0.12 [2024.10.22] =
 * removed google script

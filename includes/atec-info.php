@@ -17,13 +17,13 @@ echo '
 	{
 		echo '
 		<div class="atec-dilb atec-right">
-			<span class="atec-dilb atec-bg-white atec-border-tiny atec-box-30">'; atec_readme_button_close($url,$nonce); echo '</span>
+			<span class="atec-dilb atec-bg-w atec-border-tiny atec-box-30">'; atec_readme_button_close($url,$nonce); echo '</span>
 		</div>';
 	}
 echo '
 </div>
 
-<div style="font-size: 1.125em; max-width: 100%; padding-top: 20px;" id="readme" class="atec-mmt-10 atec-mb-0 atec-border atec-bg-white-06 atec-anywrap">';
+<div style="font-size: 1.125em; max-width: 100%; padding-top: 20px;" id="readme" class="atec-mmt-10 atec-mb-0 atec-border atec-bg-w6 atec-anywrap">';
 
 if (!$readme) echo '<p class="atec-red">Can not read the readme.txt file.</p>';
 else

@@ -13,7 +13,7 @@ $url				= atec_get_url();
 $nonce 		= wp_create_nonce(atec_nonce());
 $action 		= atec_clean_request('action');
 
-$atec_slug_arr = ['wpb','wpca','wpci','wpc','wpdb',		'wpd','wpdp','wpds','wpm','wpo',	'wppp','wppo','wppr','wpsm','wps',		'wpsi','wpur','wms','wpwp'];
+$atec_slug_arr = ['wpb','wpca','wpci','wpc','wpdb',		'wpd','wpdp','wpds','wpm','wpo',	'wppp','wppo','wppr','wpsm','wps',		'wpsi','wpsv','wpur','wms','wpwp'];
 
 $license 			= $this->atec_clean_request_license('license');
 if ($license==='') $license = atec_clean_request('license');
@@ -25,7 +25,7 @@ $integrity			= $this->atec_clean_request_license('integrity');
 $integrityString 	= '';
 if ($integrity!=='')
 {
-	$integrityString='Thank you. Connection to atecplugins.com is '.($integrity=='true'?'enabled':'disabled').'.';
+	$integrityString='Thank you. Connection to atecplugins.com is '.($integrity=='true'?'enabled':'disabled');
 	if ($integrity=='true') atec_integrity_check(__DIR__,$plugin);
 	update_option('atec_allow_integrity_check',$integrity);
 }
@@ -49,9 +49,9 @@ echo '
 				'</h3>
 				<div id="atec_group_pro_package">
 					<div id="pro_package_welcome" class="atec-fit" style="margin: 0 auto;">
-						<div class="atec-mt-5 atec-border-white atec-bg-white atec-fit" style="font-size: 16px !important; padding: 10px;">
+						<div class="atec-mt-5 atec-border-white atec-bg-w atec-fit" style="font-size: 16px !important; padding: 10px;">
 							<ul class="atec-m-0">
-							<li>⭐ ', esc_attr__('18 valuable plugins','atec-stats'), '.</li>					
+							<li>⭐ ', esc_attr__('21 valuable plugins','atec-stats'), '.</li>					
 							<li>⭐ ', esc_attr__('Access to all the „PRO“ features','atec-stats'), '.</li>
 							<li>⭐ ', esc_attr__('„Lifetime-site-License“ for your site (domain)','atec-stats'), '.</li>
 							</ul>
@@ -111,11 +111,11 @@ echo '
 			'backup','cache-apcu','cache-info','code','database',
 			'debug','deploy','dir-scan','meta','optimize',
 			'page-performance','poly-addon','profiler','smtp-mail','stats',
-			'system-info','user-roles','web-map-service','webp'];
+			'system-info','SVG','user-roles','web-map-service','webp'];
 
-		$atec_group_arr_size 	= [83,112,99,68,85,		82,70,111,65,115,	371,79,85,100,822,	115,72,440,78];
-		$atec_active			= ['cache-apcu','cache-info','database','dir-scan','system-info','web-map-service'];
-		$atec_review			= ['database'];
+		$atec_group_arr_size 	= [83,112,99,68,85,		82,70,111,65,115,	371,79,85,100,822,	115,68,72,440,78];
+		$atec_active			= ['cache-apcu','cache-info','database','debug','dir-scan','stats','system-info','web-map-service'];
+		$atec_review			= ['webp'];
 		$atec_desc_arr		= [
 							__('All-in-one Backup and restore solution – fast & reliable','atec-stats'),
 							__('APCu object and page cache','atec-stats'),
@@ -136,6 +136,7 @@ echo '
 							__('Lightweight and GDPR compliant WP statistics','atec-stats'),				
 
 							__('System Information (OS, server, memory, PHP and database details, php.ini, wp-config, .htaccess and PHP extensions)','atec-stats'),
+							__('Ads SVG support for media uploads.','atec-stats'),
 							__('Manage WordPress User Roles and Capabilities','atec-stats'),
 							__('Web map, conform with privacy regulations','atec-stats'),
 							__('Auto convert all images to WebP format','atec-stats')

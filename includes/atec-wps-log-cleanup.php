@@ -1,16 +1,13 @@
 <?php
 if (!defined('ABSPATH')) { exit; }
 
-function atec_wps_ip_to_int(string $ipaddress) 
-{
-	$pton = @inet_pton($ipaddress);
-	if (!$pton) { return 0; }
-    $number = '';
-    foreach (unpack('C*', $pton) as $byte) { $number .= str_pad(decbin($byte), 8, '0', STR_PAD_LEFT); }
-    return (int) base_convert(ltrim($number, '0'), 2, 10);
-}
+class ATEC_wps_log_cleanup {
 
-function atec_wps_log_cleanup($atec_wps_IP2GEO_path)
+private function ipv4ToDecimal($ip)	{ return sprintf('%u', ip2long($ip)); }
+private function ipv6ToDecimal($ipv6) { return (string) gmp_import(inet_pton($ipv6)); }
+private function isIpv6($ip) { return (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) ? true : false; }
+
+public function atec_wps_log_cleanup($atec_wps_IP2GEO_path)
 {	
 	$atec_wps_cleanup='atec_wps_cleanup';
 	if (get_transient($atec_wps_cleanup)===true) return;
@@ -21,9 +18,13 @@ function atec_wps_log_cleanup($atec_wps_IP2GEO_path)
 	// @codingStandardsIgnoreStart
 	$results = $wpdb->get_results($wpdb->prepare('SELECT * FROM %1s ORDER BY `ip` LIMIT 50', $table.'_tmp'));
 	
+	$IP2LOC='IP2LOCATION-LITE-DB1';
+	$ip4Path=$atec_wps_IP2GEO_path.$IP2LOC.'.BIN';
+	$ip6Path=$atec_wps_IP2GEO_path.$IP2LOC.'.IPV6.BIN';
+	
 	if (!empty($results))
 	{
-		$db 			= null;
+		$db 			= [];
 		$lastIp 		= null;
 		$lastIpId	= null;	
 		
@@ -32,21 +33,21 @@ function atec_wps_log_cleanup($atec_wps_IP2GEO_path)
 
 		foreach($results as $result)
 		{
-			$start=microtime(true);
-			$ip2int=atec_wps_ip_to_int($result->ip);
-			if ($lastIp!==$ip2int)
+			$IPver=$this->isIpv6($result->ip)?6:4;
+			$ip2dec=($IPver===6)?$this->ipv6ToDecimal($result->ip):$this->ipv4ToDecimal($result->ip);
+			if ($lastIp!==$ip2dec)
 			{
-				$ips = $wpdb->get_results($wpdb->prepare('SELECT id FROM %1s WHERE `ip` LIKE %s', $table.'_ips', $ip2int));
+				$ips = $wpdb->get_results($wpdb->prepare('SELECT id FROM %1s WHERE `ip` LIKE %s', $table.'_ips', $ip2dec));
 				if (empty($ips))
 				{
-					if (!$db)
+					if (!isset($db[$IPver]))
 					{
 						require_once(__DIR__.'/atec_wps_IP2GEO.php');
-						$db = new \IP2Location\Database($atec_wps_IP2GEO_path, \IP2Location\Database::FILE_IO);
+						$db[$IPver] = new \IP2Location\Database($IPver===6?$ip6Path:$ip4Path, \IP2Location\Database::FILE_IO);
 					}
-					$records = $db->lookup($result->ip, \IP2Location\Database::ALL);
+					$records = $db[$IPver]->lookup($result->ip, \IP2Location\Database::ALL);
 					$cc=$records['countryCode']??'-';
-					$wpdb->insert($table.'_ips', array('cc'=>$cc, 'ip'=>$ip2int), array('%s', '%d'));
+					$wpdb->insert($table.'_ips', array('cc'=>$cc, 'ip'=>$ip2dec), array('%s', '%s'));
 					$lastIpId=$wpdb->insert_id;
 				}
 				else $lastIpId=$ips[0]->id;
@@ -80,7 +81,7 @@ function atec_wps_log_cleanup($atec_wps_IP2GEO_path)
 			$wpdb->insert($table, array('ts'=>$result->ts, 'ip_id'=>$lastIpId));
 			$wpdb->delete($table.'_tmp', array('id'=>$result->id));
 
-			$lastIp=$ip2int;
+			$lastIp=$ip2dec;
 		}		
 	}
 
@@ -89,4 +90,7 @@ function atec_wps_log_cleanup($atec_wps_IP2GEO_path)
 	// @codingStandardsIgnoreEnd
 	delete_transient($atec_wps_cleanup);
 }
+
+function __construct() {
+}}
 ?>

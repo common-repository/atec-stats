@@ -72,7 +72,7 @@ function atec_input_select($args): void
 function atec_input_text($args,$type='text'): void
 {
 	$option = get_option($args['opt-name'],[]); $field=$args['name'];
-    echo '<input type="', esc_attr($type), '" name="', esc_attr($args['opt-name']), '[', esc_attr($field), ']" value="', esc_attr($option[$field]??''), '">';
+    echo '<input id="ai_'.esc_attr($field).'" type="', esc_attr($type), '" name="', esc_attr($args['opt-name']), '[', esc_attr($field), ']" value="', esc_attr($option[$field]??''), '">';
 }
 
 function atec_input_password($args): void { atec_input_text($args,$type='password'); }

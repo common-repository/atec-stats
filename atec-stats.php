@@ -4,7 +4,7 @@ if ( !defined('ABSPATH') ) { die; }
 * Plugin Name:  atec Stats
 * Plugin URI: https://atecplugins.com/
 * Description: Lightweight, beautiful and GDPR compliant WP statistics, including countries map.
-* Version: 1.0.12
+* Version: 1.0.13
 * Author: Chris Ahrweiler
 * Author URI: https://atec-systems.com
 * License: GPL2
@@ -16,7 +16,7 @@ function atec_wps_table() { global $wpdb; return $wpdb->base_prefix.'atec_stats'
 
 if (is_admin())
 { 
-	wp_cache_set('atec_wps_version','1.0.12');
+	wp_cache_set('atec_wps_version','1.0.13');
 	register_activation_hook( __FILE__, function() { require_once('includes/atec-wps-activation.php'); });
 	require_once('includes/atec-wps-install.php');
 }
@@ -79,7 +79,11 @@ add_action( 'wp_ajax_nopriv_atec_wps_log_ajax', 'atec_wps_log_ajax' );
 function atec_wps_log_cleanup_include($force=false)
 {
 	$atec_wps_IP2GEO_path=get_option('atec_wps_IP2GEO_path');
-	if ($atec_wps_IP2GEO_path) { require_once('includes/atec-wps-log-cleanup.php'); atec_wps_log_cleanup($atec_wps_IP2GEO_path,$force); }
+	if ($atec_wps_IP2GEO_path) 
+	{ 
+		require_once('includes/atec-wps-log-cleanup.php'); 
+		(new ATEC_wps_log_cleanup)->atec_wps_log_cleanup($atec_wps_IP2GEO_path); 
+	}
 	else { $notice=['type'=>'warning', 'message'=>'IP2GEO DB not found. Please deactivate/activate the plugin to download the DB file.']; update_option('atec_wps_debug',$notice,false); }
 }
 ?>

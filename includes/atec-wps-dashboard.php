@@ -2,7 +2,7 @@
 if (!defined( 'ABSPATH' )) { exit; }
 
 class ATEC_wps_dashboard { function __construct() {
-	
+
 echo '
 <div class="atec-page">';
 	
@@ -64,7 +64,11 @@ echo '
 					elseif ($action=='map') 
 					{ 
 						if (atec_pro_feature('`Map´ shows the country\'s popularity on a world map, highlighting all countries with their respective visitor count')) 
-						{ require_once('atec-wps-map-pro.php'); new ATEC_wps_map($url, $action, $nonce); }
+						{ 
+							@include_once('atec-wps-map-pro.php'); 
+							if (class_exists('ATEC_wps_map')) new ATEC_wps_map($url, $action, $nonce);
+							else atec_missing_class_check();
+						}
 					}
 					elseif ($action=='urls') { require_once('atec-wps-urls.php'); }
 					else { require_once('atec-wps-stats.php'); new ATEC_wps_stats($action, $month, $year); }

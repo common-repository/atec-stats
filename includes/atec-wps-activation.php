@@ -21,7 +21,6 @@ atec_integrity_check(__DIR__);
 	
 /** TABLES */
 
-
 $table=atec_wps_table();
 $engine=' ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_general_ci';
 $compressed=' ROW_FORMAT=COMPRESSED ';
@@ -32,7 +31,7 @@ $sql=' (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `ts` TIMESTAMP NOT NULL DEFAU
 
 $success=$this->atec_create_table($table.'_tmp',$sql);
 
-$sql=' (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `ip` DECIMAL(16,0) NOT NULL, `cc` CHAR(2) NOT NULL DEFAULT "", PRIMARY KEY (`id`))'.$engine;
+$sql=' (`id` INT UNSIGNED NOT NULL AUTO_INCREMENT, `ip` DECIMAL(40,0) NOT NULL, `cc` CHAR(2) NOT NULL DEFAULT "", PRIMARY KEY (`id`))'.$engine;
 $success=$success && $this->atec_create_table($table.'_ips',$sql);
 
 $sql=' (`url` VARCHAR(14) NOT NULL , `count` INT UNSIGNED NOT NULL DEFAULT 1, PRIMARY KEY (`url`))'.$compressed.$engine;
@@ -41,34 +40,38 @@ $success=$success && $this->atec_create_table($table.'_urls',$sql);
 $sql=' (`ref` VARCHAR(255) NOT NULL , `count` INT UNSIGNED NOT NULL DEFAULT 1, PRIMARY KEY (`ref`))'.$compressed.$engine;
 $success=$success && $this->atec_create_table($table.'_refs',$sql);
 
+global $wpdb;
+$success=true;
+// @codingStandardsIgnoreStart
+$success=$wpdb->query($wpdb->prepare('ALTER TABLE %1s CHANGE `ip` `ip` DECIMAL(40) NOT NULL', $table.'_ips'));
+// @codingStandardsIgnoreEnd
+
 $notice=['type'=>$success?'success':'warning', 'message'=>$success?'Plugin tables created.':'Failed to create plugin tables.'];
 update_option('atec_wps_debug',$notice,false);
 
 //** IP2GEO BIN */
-global $wp_filesystem;
-WP_Filesystem();
+global $wp_filesystem; WP_Filesystem();
 
 $upload_dir = wp_get_upload_dir()['basedir'].'/atec-stats';
 if (!$wp_filesystem->exists($upload_dir)) $wp_filesystem->mkdir($upload_dir);
-$atecURL 	= 'https://atecplugins.com/WP-Plugins/';
-$file 			= 'IP2LOCATION-LITE-DB1.BIN.zip';
-$file_url	= esc_attr($atecURL).esc_attr($file);
-$error		= '';
-$tmp_file = download_url($file_url);
-if (is_wp_error($tmp_file)) { $error='Could not download the IP2GEO DB file.'; }
-else 
+$error = '';
+
+$IP2LOC='IP2LOCATION-LITE-DB1';
+foreach(['','IPV6.'] as $bin)
 {
-	if ($wp_filesystem->exists($tmp_file)) 
-	{ 
+	if (is_wp_error(($tmp_file = download_url('https://atecplugins.com/WP-Plugins.'.$IP2LOC.$bin.'BIN.zip')))) { $error='Could not download the IP2GEO DB file.'; }
+	else 
+	{
 		$result=unzip_file($tmp_file, $upload_dir);
 		if (is_wp_error( $result )) $error='Could not unzip the IP2GEO DB file.';
 		$wp_filesystem->delete($tmp_file);
 	}
 }
+
 if ($error!=='') { $notice['type']='warning'; $notice['message']=$notice['message'].' '.$error; update_option('atec_wps_debug', $notice, false); }
 else 
 { 
-	update_option('atec_wps_IP2GEO_path', $upload_dir.'/'.str_replace('.zip','',$file));
+	update_option('atec_wps_IP2GEO_path', $upload_dir.DIRECTORY_SEPARATOR);
 	$notice['message']=$notice['message'].' IP2GEO DB file installed.'; update_option('atec_wps_debug', $notice, false); 
 }
 
